@@ -1,5 +1,5 @@
-import { app } from "./app/app.js"
-import { logger } from "./app/logger.js"
+import { app } from "./src/app/app.js"
+import { logger } from "./src/app/logger.js"
 
 
 app.listen(4000, () => {

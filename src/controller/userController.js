@@ -37,11 +37,11 @@ const login = async (req, res, next) => {
         const result = await userService.userLogin(req.body)
 
         console.log(result);
-        res.cookie("refreshToken", result[1], {
-            maxAge: 1000 * 60 * 60 * 24 * 7,
-            httpOnly: true
-        })
-        return response(res, result[0], "Success Login", 200)
+        // res.cookie("refreshToken", result[1], {
+        //     maxAge: 1000 * 60 * 60 * 24 * 7,
+        //     httpOnly: true
+        // })
+        return response(res, result, "Success Login", 200)
 
     } catch (error) {
         next(error)

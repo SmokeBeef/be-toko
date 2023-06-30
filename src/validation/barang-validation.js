@@ -6,7 +6,7 @@ const add = Joi.object({
 })
 
 const id = Joi.object({
-    id: Joi.number().required()
+    id: Joi.string().required()
 })
 
 export default {

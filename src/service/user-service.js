@@ -21,16 +21,15 @@ const register = async (payload) => {
 
     user.password = await bcrypt.hash(user.password, 10)
 
-    user.id = uuid()
-    user.createAt = new Date()
+    user.createAt = new Date().getDate()
     return await db.user.create({
 
         data: user,
         select: {
             id: true,
-            nama: true,
             email: true,
             role: true,
+            createAt: true
         }
     })
 
@@ -40,13 +39,13 @@ const userLogin = async (request) => {
 
     const payload = validate(login, request)
 
-    
+
     const cek = await db.user.findUnique({
         where: {
             email: payload.email
         },
         select: {
-            nama: true,
+            id: true,
             password: true,
             email: true,
             role: true,
@@ -66,33 +65,33 @@ const userLogin = async (request) => {
 
         })
 
-
-    const tokenRefresh = jwt.sign(cek, process.env.SECRET_KEY_REFRESH, {
-        expiresIn: "7d",
-    })
-    const token = jwt.sign(cek, process.env.SECRET_KEY, {
-        expiresIn: "60s"
-    })
-
-    const result = await db.user.update({
-        where: {
-            email: cek.email
-        },
-        data: {
-            token: tokenRefresh
-        },
-        select: {
-            id: true,
-            nama: true,
-            email: true,
-            role: true,
-        }
+    const payloadJwt = {
+        id: cek.id,
+        email: cek.email,
+        role: cek.role,
+    }
+    // const tokenRefresh = jwt.sign(payloadJwt, process.env.SECRET_KEY_REFRESH, {
+    //     expiresIn: "7d",
+    // })
+    const token = jwt.sign(payloadJwt, process.env.SECRET_KEY, {
+        expiresIn: "90d"
     })
 
-    result.token = token
-    
+    // const result = await db.user.update({
+    //     where: {
+    //         email: cek.email
+    //     },
+    //     select: {
+    //         id: true,
+    //         email: true,
+    //         role: true,
+    //     }
+    // })
 
-    return [result, tokenRefresh]
+    payloadJwt.token = token
+
+
+    return payloadJwt
 }
 
 const logout = async (request) => {
@@ -109,7 +108,7 @@ const logout = async (request) => {
             email: true,
             nama: true
         }
-        
+
     })
 
     return logout

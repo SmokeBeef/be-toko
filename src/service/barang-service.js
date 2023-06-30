@@ -57,7 +57,6 @@ const update = async (payload, id) => {
         select: {
             nama: true,
             harga: true,
-            jumlah: true
         }
     })
 
@@ -66,7 +65,7 @@ const update = async (payload, id) => {
 
 const deleteBarang = async (id) => {
     const checkId = validate(barangValidation.id, id)
-
+console.log(checkId);
     const result = await db.barang.delete({
         where: checkId,
         select: {

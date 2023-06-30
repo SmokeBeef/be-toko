@@ -46,7 +46,7 @@ const update = async (req, res, next) => {
 const deleteBarang = async (req, res, next) => {
     try {
         const result = await barangService.deleteBarang(req.params)
-        return response(res, result, "success delete", 200)
+        return response(res, result, "success delete", 201)
     } catch (error) {
         next(error)
     }

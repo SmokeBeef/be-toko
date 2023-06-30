@@ -1,7 +1,7 @@
 import joi from "joi"
 
 const userRegister = joi.object({
-    nama: joi.string().max(100).required(),
+    // nama: joi.string().max(100).required(),
     email: joi.string().email({
         tlds: {
             allow: ["com"]
